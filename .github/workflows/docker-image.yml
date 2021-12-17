@@ -1,0 +1,24 @@
+name: Build Docker
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      .github/workflows/**
+
+jobs:
+
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build Wwise 2019.2.4.7329
+      run: docker build "./Wwise 2019.2.4.7329" --tag johnloser/wwise_windows:2019_2_4_7329
+      
+    - name: Build Wwise 2021.1.2.7629
+      run: docker build "./Wwise 2021.1.2.7629" --tag johnloser/wwise_windows:2021_1_2_7629
+      
+    - name: Build Wwise Wwise 2021.1.4.7707
+      run: docker build "./Wwise 2021.1.4.7707" --tag johnloser/wwise_windows:2021_1_3_7707
