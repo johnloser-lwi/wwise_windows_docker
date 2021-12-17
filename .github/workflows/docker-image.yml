@@ -36,7 +36,7 @@ jobs:
       run: 
         cp ./VC_redist.x64.exe "./Wwise 2021.1.4.7707" 
         cp Dockerfile "./Wwise 2021.1.4.7707" 
-        docker build "./Wwise 2021.1.4.7707" --tag johnloser/wwise_windows:2021_1_3_7707
+        docker build "./Wwise 2021.1.4.7707" --tag johnloser/wwise_windows:2021_1_4_7707
       
     - name: Push
       run: docker push --all-tags johnloser/wwise_windows
