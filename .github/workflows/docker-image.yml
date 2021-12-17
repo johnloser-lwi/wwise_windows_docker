@@ -26,7 +26,7 @@ jobs:
     - name: Build Wwise 2021.1.2.7629
       run: docker build "./Wwise 2021.1.2.7629" --tag johnloser/wwise_windows:2021_1_2_7629
       
-    - name: Build Wwise Wwise 2021.1.4.7707
+    - name: Build Wwise 2021.1.4.7707
       run: docker build "./Wwise 2021.1.4.7707" --tag johnloser/wwise_windows:2021_1_3_7707
       
     - name: Push
