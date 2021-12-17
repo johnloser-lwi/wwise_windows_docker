@@ -14,6 +14,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Login Docker
+    - run: docker login -u {{ secrets.DOCKER_USER }} -p {{ secrets.DOCKER_PASSWORD }} 
+    
     - name: Build Wwise 2019.2.4.7329
       run: docker build "./Wwise 2019.2.4.7329" --tag johnloser/wwise_windows:2019_2_4_7329
       
@@ -22,3 +26,6 @@ jobs:
       
     - name: Build Wwise Wwise 2021.1.4.7707
       run: docker build "./Wwise 2021.1.4.7707" --tag johnloser/wwise_windows:2021_1_3_7707
+      
+    - name: Push
+      run: docker push --all-tags johnloser/wwise_windows
