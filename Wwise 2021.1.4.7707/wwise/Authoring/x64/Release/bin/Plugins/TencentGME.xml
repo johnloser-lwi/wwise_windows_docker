@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2018-2028 Tencent Technology All Right Reserved. -->
+<PluginModule>
+  <SourcePlugin Name="Tencent GME Source" CompanyID="289" PluginID="9001">
+    <PluginInfo CanUnlink="true" MenuPath="35-Tencent">
+      <PlatformSupport>
+        <Platform Name="Windows"></Platform>
+        <Platform Name="Mac"></Platform>
+        <Platform Name="Android"></Platform>
+        <Platform Name="iOS"></Platform>
+        <Platform Name="PS4"></Platform>
+        <Platform Name="XboxOne"></Platform>
+        <Platform Name="Switch"></Platform>
+      </PlatformSupport>
+    </PluginInfo>
+  </SourcePlugin>
+  <SourcePlugin Name="Tencent GME Receive" CompanyID="289" PluginID="9003">
+    <PluginInfo CanUnlink="true" MenuPath="35-Tencent">
+      <PlatformSupport>
+        <Platform Name="Windows"></Platform>
+        <Platform Name="Mac"></Platform>
+        <Platform Name="Android"></Platform>
+        <Platform Name="iOS"></Platform>
+        <Platform Name="PS4"></Platform>
+        <Platform Name="XboxOne"></Platform>
+        <Platform Name="Switch"></Platform>
+      </PlatformSupport>
+    </PluginInfo>
+  </SourcePlugin>
+  <EffectPlugin Name="Tencent GME Send" CompanyID="289" PluginID="9004">
+    <PluginInfo MenuPath="35-Tencent">
+      <PlatformSupport>
+        <Platform Name="Windows">
+          <CanBeInsertOnBusses>true</CanBeInsertOnBusses>
+          <CanBeInsertOnAudioObjects>true</CanBeInsertOnAudioObjects>
+          <CanBeRendered>false</CanBeRendered>
+        </Platform>
+        <Platform Name="Mac">
+          <CanBeInsertOnBusses>true</CanBeInsertOnBusses>
+          <CanBeInsertOnAudioObjects>true</CanBeInsertOnAudioObjects>
+          <CanBeRendered>false</CanBeRendered>
+        </Platform>
+        <Platform Name="Android">
+          <CanBeInsertOnBusses>true</CanBeInsertOnBusses>
+          <CanBeInsertOnAudioObjects>true</CanBeInsertOnAudioObjects>
+          <CanBeRendered>false</CanBeRendered>
+        </Platform>
+        <Platform Name="iOS">
+          <CanBeInsertOnBusses>true</CanBeInsertOnBusses>
+          <CanBeInsertOnAudioObjects>true</CanBeInsertOnAudioObjects>
+          <CanBeRendered>false</CanBeRendered>
+        </Platform>
+        <Platform Name="PS4">
+          <CanBeInsertOnBusses>true</CanBeInsertOnBusses>
+          <CanBeInsertOnAudioObjects>true</CanBeInsertOnAudioObjects>
+          <CanBeRendered>false</CanBeRendered>
+        </Platform>
+        <Platform Name="XboxOne">
+          <CanBeInsertOnBusses>true</CanBeInsertOnBusses>
+          <CanBeInsertOnAudioObjects>true</CanBeInsertOnAudioObjects>
+          <CanBeRendered>false</CanBeRendered>
+        </Platform>
+        <Platform Name="Switch">
+          <CanBeInsertOnBusses>true</CanBeInsertOnBusses>
+          <CanBeInsertOnAudioObjects>true</CanBeInsertOnAudioObjects>
+          <CanBeRendered>false</CanBeRendered>
+        </Platform>
+      </PlatformSupport>
+    </PluginInfo>
+  </EffectPlugin>
+  <EffectPlugin Name="Tencent GME Session" CompanyID="289" PluginID="9005">
+    <PluginInfo MenuPath="35-Tencent">
+      <PlatformSupport>
+        <Platform Name="Windows">
+          <CanBeInsertOnAudioDevices>true</CanBeInsertOnAudioDevices>
+        </Platform>
+        <Platform Name="Mac">
+          <CanBeInsertOnAudioDevices>true</CanBeInsertOnAudioDevices>
+        </Platform>
+        <Platform Name="Android">
+          <CanBeInsertOnAudioDevices>true</CanBeInsertOnAudioDevices>
+        </Platform>
+        <Platform Name="iOS">
+          <CanBeInsertOnAudioDevices>true</CanBeInsertOnAudioDevices>
+        </Platform>
+        <Platform Name="PS4">
+          <CanBeInsertOnAudioDevices>true</CanBeInsertOnAudioDevices>
+        </Platform>
+        <Platform Name="XboxOne">
+          <CanBeInsertOnAudioDevices>true</CanBeInsertOnAudioDevices>
+        </Platform>
+        <Platform Name="Switch">
+          <CanBeInsertOnAudioDevices>true</CanBeInsertOnAudioDevices>
+        </Platform>
+      </PlatformSupport>
+    </PluginInfo>
+    <Properties>
+      <Property Name="GMEAuthBlob" Type="string" DisplayName="Auth Blob">
+        <DefaultValue></DefaultValue>
+        <AudioEnginePropertyID>5</AudioEnginePropertyID>
+      </Property>
+      <Property Name="GMERoomID" Type="string" DisplayName="Room ID">
+        <DefaultValue>123abc</DefaultValue>
+        <AudioEnginePropertyID>3</AudioEnginePropertyID>
+      </Property>
+      <Property Name="GMEUserID" Type="int64" DisplayName="User ID">
+        <UserInterface Step="1" />
+        <DefaultValue>123456</DefaultValue>
+        <AudioEnginePropertyID>4</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="int64">
+              <Min>10000</Min>
+              <Max>10000000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+    </Properties>
+  </EffectPlugin>
+</PluginModule>

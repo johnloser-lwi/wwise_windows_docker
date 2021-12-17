@@ -1,0 +1,8 @@
+
+<h2>Channels</h2>
+<p>그레인이 Output Config가 정의한대로 신시사이저의 출력 채널 구성으로 공간화되어야 할지 혹은 직접 지정되어야 할지를 정의합니다.</p>
+<ul>
+<li>Direct Speaker Assignment: 공간화나 패닝이 적용되지 않습니다. 모노 파일은 Output Config가 중앙 채널일 경우 중앙 채널로, 그렇지 않을 경우 왼쪽 앞과 오른쪽 앞 채널로 라우팅됩니다. 보통 입력 채널은 동일한 출력 채널로 매핑되며, 이 채널이 출력 구성에 있지 않을 경우 생략됩니다.</li>
+<li>3D Spatialization: Azimuth, Elevation, Spread를 사용하여 그레인이 신시사이저의 출력 구성으로 3D 공간화됩니다. 공간화가 유용하게 사용되려면 Output Config가 여러 채널을 가져야 합니다.</li>
+</ul>
+<p>Default value: Direct Speaker Assignment<br/></p>

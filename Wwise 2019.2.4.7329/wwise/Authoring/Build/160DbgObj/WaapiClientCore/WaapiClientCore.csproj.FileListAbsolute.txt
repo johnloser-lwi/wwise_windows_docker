@@ -1,0 +1,5 @@
+C:\Program Files (x86)\Audiokinetic\Wwise 2019.2.4.7329\Authoring\x64\Debug\bin\Tools\WaapiClientCore.dll
+C:\Program Files (x86)\Audiokinetic\Wwise 2019.2.4.7329\Authoring\x64\Debug\bin\Tools\WaapiClientCore.pdb
+C:\Program Files (x86)\Audiokinetic\Wwise 2019.2.4.7329\Authoring\Build\160DbgObj\WaapiClientCore\WaapiClientCore.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Audiokinetic\Wwise 2019.2.4.7329\Authoring\Build\160DbgObj\WaapiClientCore\WaapiClientCore.dll
+C:\Program Files (x86)\Audiokinetic\Wwise 2019.2.4.7329\Authoring\Build\160DbgObj\WaapiClientCore\WaapiClientCore.pdb

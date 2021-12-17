@@ -1,0 +1,14 @@
+
+<h2>Channel Config</h2>
+<p>声道配置。列出音频源可用的声道配置，配置会影响声道的转换方式。</p>
+<p>Wwise 可按以下文件声道排序来识别音频源声道配置：</p>
+<ul>
+<li><strong>SMPTE</strong>:在默认情况下，Wwise 将文件顺序识别为 SMPTE（Microsoft 标准），除非其包含 Ambisonics 文件头。对于 5.1，将显示为 <strong>5.1(L,R,C,LFE,SL,SR)</strong>。<br/>
+不过，列表中会显示默认设置及 Detect [channelconfig]。其中，channelconfig 表示检测到的配置。对于 5.1，将显示为 <strong>Detect [5.1(L,R,C,LFE,SL,SR)]</strong>。<br/></li>
+<li><strong>FuMa</strong>:在默认情况下，对于 Ambisonics Component Ordering，Wwise 将文件顺序识别为 FuMa。对于 Ambisonics 1-1，将显示为 <strong>4(Ambisonics) (FuMa)</strong>。<br/>
+不过，列表中会显示默认设置及 Detect [channelconfig]。其中，channelconfig 表示检测到的配置。对于 Ambisonics 1-1，将显示为 <strong>Detect [4(Ambisonics)(FuMa)]</strong>。<br/></li>
+<li><strong>Anonymous</strong>:匿名 Channel Config 选项直接按照图中显示顺序来标记声道编号。因此，Ambisonics 1-1 文件将显示为 1 + 2 + 3 + 4，而 5.1 文件则显示为 1 + 2 + 3 + 4 + 5 + 6。<br/></li>
+<li><strong>Film</strong>:除 Ambisonics 文件外，列表中的备选文件排序为 Film。对于 5.1，将显示为 <strong>5.1(L,C,R,SL,SR,LFE)</strong>。<br/></li>
+<li><strong>AmbiX</strong>:对于 Ambisonics，列表中的备选文件排序为 AmbiX（经过 SN3D 归一化的 ACN 排序）。对于 Ambisonics 1-1，将显示为 <strong>4(Ambisonics)(AmbiX)</strong>。<br/></li>
+</ul>
+<p>Default value: 0<br/></p>

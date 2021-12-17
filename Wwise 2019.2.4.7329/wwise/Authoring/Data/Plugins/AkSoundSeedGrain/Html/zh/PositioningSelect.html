@@ -1,0 +1,8 @@
+
+<h2>Channels</h2>
+<p>定义是否将粒子空间化，使其匹配 Output Config 中指定的合成器输出声道配置，还是直接进行指派。</p>
+<ul>
+<li>Direct Speaker Assignment: 不应用空间化或声像摆位。若 Output Config 包含中置声道，则将单声道文件输出至中置声道，否则输出至左前和右前声道。通常，会将输入声道映射至相同的输出声道；若输出配置中不存在这些声道，则将弃用所述输入。</li>
+<li>3D Spatialization: 使用 Azimuth、Elevation 和 Spread，将粒子 3D 空间化，适配合成器的输出配置。注意，Output Config 须包含多个声道，空间化才会起作用。</li>
+</ul>
+<p>Default value: Direct Speaker Assignment<br/></p>

@@ -1,0 +1,14 @@
+
+<h2>Enable diffraction</h2>
+<p>Enable diffraction processing in Spatial Audio for the sound.</p>
+<p>Diffraction simulates the acoustic phenomenon of sound bending around obstacles - either acoustic portals or level geometry, in a virtual environment. For sound to be diffracted, the game must define either level geometry or rooms and portals and send it to Wwise Spatial Audio.</p>
+<p>When diffraction is enabled for a sound, the following takes place in Wwise Spatial Audio:</p>
+<ul>
+<li>One or more paths between the emitter and the listener are calculated.</li>
+<li>A diffraction coefficient (0%-100%) is calculated based on the sum of angles in the path. A straight line path is considered 0% diffraction, and a path that bends 180 degrees or more is considered 100% diffraction.</li>
+<li>The diffraction coefficient (%) is converted to an attenuation, low-pass and high-pass filter value using the <strong>obstruction</strong> curve defined in the Wwise project settings. The sound is attenuated and filtered accordingly.</li>
+<li>The apparent position of the sound relative to the listener is calculated to create &lsquo;virtual&rsquo; positions giving the listener the impression that the sound is propagating around a corner or through a portal.</li>
+</ul>
+<p><strong>Note</strong>: 3D Game Object Viewer enables the user to see what is going on inside of Wwise Spatial Audio, including level geometry, portals, and both the sound&rsquo;s diffraction paths and resultant virtual positions.</p>
+<p><strong>Note</strong>: For diffraction to take effect, the Wwise Spatial Audio library must be initialized and the game must send level geometry or rooms and portals to Wwise Spatial Audio.</p>
+<p>Default value: false<br/></p>

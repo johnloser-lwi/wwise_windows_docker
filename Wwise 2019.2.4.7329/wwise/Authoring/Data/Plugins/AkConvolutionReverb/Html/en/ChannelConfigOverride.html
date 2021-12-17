@@ -1,0 +1,14 @@
+
+<h2>Channel Config</h2>
+<p>A list of possible channel configurations for the source, which will impact how the channels are transformed.</p>
+<p>Wwise can interpret the source channel configuration according to the following file ordering varieties:</p>
+<ul>
+<li><strong>SMPTE</strong>: By default, Wwise understands the file order to be SMPTE (the Microsoft standard), unless it has an ambisonics header. For 5.1, it would appear as <strong>5.1(L,R,C,LFE,SL,SR)</strong>.<br/>
+However, the default is indicated in the list with Detect [channelconfig], where &ldquo;channelconfig&rdquo; indicates the detected configuration. For 5.1, it appears as <strong>Detect [5.1(L,R,C,LFE,SL,SR)]</strong>.<br/></li>
+<li><strong>FuMa</strong>: By default, for Ambisonics Component Ordering, Wwise understands the file order to be FuMa. For ambisonics 1-1, it would appear as <strong>4(Ambisonics) (FuMa)</strong>.<br/>
+However, the default is indicated in the list with Detect [channelconfig], where &ldquo;channelconfig&rdquo; indicates the detected configuration. For ambisonics 1-1, it appears as <strong>Detect [4(Ambisonics)(FuMa)]</strong>.<br/></li>
+<li><strong>Anonymous</strong>: The anonymous Channel Config options simply number the channels in order of appearance. So, an ambisonics 1-1 file would just be 1 + 2 + 3 + 4, while a 5.1 file would just be 1 + 2 + 3 + 4 + 5 + 6.<br/></li>
+<li><strong>Film</strong>: Apart from ambisonic files, the alternative file orderings in the list are Film. For 5.1, it appears as <strong>5.1(L,C,R,SL,SR,LFE)</strong>.<br/></li>
+<li><strong>AmbiX</strong>: For ambisonics, the alternative file orderings in the list are AmbiX (ACN ordering with SN3D normalization). For ambisonics 1-1, it appears as <strong>4(Ambisonics)(AmbiX)</strong>.<br/></li>
+</ul>
+<p>Default value: 0<br/></p>

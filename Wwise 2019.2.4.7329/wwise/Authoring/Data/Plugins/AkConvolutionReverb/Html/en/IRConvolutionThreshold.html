@@ -1,0 +1,5 @@
+
+<h2>IR Threshold</h2>
+<p>Specifies the level below which energy contained in the impulse response will be discarded to save memory and CPU resources. This threshold is compared against a frequency-specific energy computation that evolves over time in the impulse response and allows for the optimization of storage and processing of the convolution at no or minimal cost in terms of quality losses. A value of -144 dB will result in the full impulse response information being processed while lower values will typically eliminate low-energy higher frequency information to obtain significant optimizations. At higher threshold values (for example, above -50 dB), artifacts due to compression will be more noticeable. It is recommended that you try to set the threshold as high as possible without noticeably affecting the audio quality. For more details, refer to <a href="HelpDoc=wwise_convolution_reverb_plug_in#memory_and_cpu_optimizations">Memory and CPU Optimizations</a>.</p>
+<p>Default value: -144<br/>
+Range: -144 to -30<br/></p>

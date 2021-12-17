@@ -1,0 +1,4 @@
+^C:\USERS\XINDONG\DESKTOP\LOWPASS\WWISEPLUGIN\LOWPASS.XML
+if not exist "C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\Win32\Debug\bin\Plugins\" mkdir "C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\Win32\Debug\bin\Plugins\"
+if exist "C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\Win32\Debug\bin\Plugins\Lowpass.xml" del /F /Q "C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\Win32\Debug\bin\Plugins\Lowpass.xml"
+copy /y "C:\Users\XINDONG\Desktop\Lowpass\WwisePlugin\Lowpass.xml" "C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\Win32\Debug\bin\Plugins\Lowpass.xml"

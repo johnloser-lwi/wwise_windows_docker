@@ -1,0 +1,12 @@
+
+<h2>IR Channels</h2>
+<p>Downmix options available for multi-channel impulse responses:</p>
+<ul>
+<li><strong>As Input</strong>: Uses all channels of the impulse response to perform a multi-channel convolution.</li>
+<li><strong>Stereo</strong>: Uses a stereo downmix of the impulse response to perform a stereo convolution. Ignored with anonymous channel configurations (falls back to As Input).</li>
+<li><strong>Mixdown</strong>: Uses a downmix of all channels of the impulse response to perform a mono convolution with all channels. Anonymous configurations and ambisonics take the first channel / W.</li>
+<li><strong>Left only</strong>: Uses the left channel from the impulse response to perform a mono convolution with all channels. Anonymous configurations and ambisonics take the first channel / W.</li>
+<li><strong>Right only</strong>: Uses the right channel from the impulse response to perform a mono convolution with all channels. Anonymous configurations and ambisonics take the first channel / W.</li>
+</ul>
+<p><strong>Note</strong>: This control is only enabled when a multi-channel impulse response file is used.</p>
+<p>Default value: As Input<br/></p>

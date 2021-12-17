@@ -1,0 +1,9 @@
+﻿  Copying "TestWwsiseEffect.xml"...
+  已复制         1 个文件。
+  TestWwsiseEffectPlugin.cpp
+  TestWwsiseEffectPluginGUI.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+    正在创建库 C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\x64\Release\bin\Plugins\TestWwsiseEffect.lib 和对象 C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\x64\Release\bin\Plugins\TestWwsiseEffect.exp
+  TestWwsiseEffect_Authoring_Windows_vc150.vcxproj -> C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\x64\Release\bin\Plugins\TestWwsiseEffect.dll
+  已复制         1 个文件。

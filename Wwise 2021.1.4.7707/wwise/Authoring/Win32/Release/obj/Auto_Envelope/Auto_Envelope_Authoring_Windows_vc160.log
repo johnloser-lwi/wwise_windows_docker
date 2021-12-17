@@ -1,0 +1,6 @@
+﻿  Copying "Auto_Envelope.xml"...
+  已复制         1 个文件。
+  Auto_EnvelopePlugin.cpp
+  Auto_EnvelopePluginGUI.cpp
+C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\SDK\include\AK\Wwise\Plugin\PluginMFCWindows.h(45,11): fatal error C1083: 无法打开包括文件: “afxwin.h”: No such file or directory (编译源文件 Auto_EnvelopePlugin.cpp)
+C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\SDK\include\AK\Wwise\Plugin\PluginMFCWindows.h(45,11): fatal error C1083: 无法打开包括文件: “afxwin.h”: No such file or directory (编译源文件 Win32\Auto_EnvelopePluginGUI.cpp)

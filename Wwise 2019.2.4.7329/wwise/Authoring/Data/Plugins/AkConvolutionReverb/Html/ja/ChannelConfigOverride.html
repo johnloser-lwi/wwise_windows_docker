@@ -1,0 +1,14 @@
+
+<h2>Channel Config</h2>
+<p>ソース用として可能なチャンネルコンフィギュレーションのリストで、チャンネルをどう変換するかに影響する。</p>
+<p>Wwiseは、以下のファイルオーダーに従って、ソースチャンネルのコンフィギュレーションを解釈する:</p>
+<ul>
+<li><strong>SMPTE</strong>:デフォルトで、Wwiseはファイル順番をSMPTE（Microsoft標準として解釈するが、アンビソニックスヘッダがある場合を除く。5.1の場合、<strong>5.1(L,R,C,LFE,SL,SR)</strong>と表示される。<br/>
+ただしデフォルトはリスト内にDetect [channelconfig]と表示され、この場合の&rdquo;channelconfig&rdquo;は検知されたコンフィギュレーションを示す。5.1の場合、<strong>Detect [5.1(L,R,C,LFE,SL,SR)]</strong>と表示される。<br/></li>
+<li><strong>FuMa</strong>:デフォルトで、Ambisonics Component Orderingの場合、Wwiseはファイル順番をFuMaとして理解する。アンビソニックス1-1の場合は、<strong>4(Ambisonics) (FuMa)</strong>と表示される。<br/>
+ただしデフォルトはリスト内にDetect [channelconfig]と表示され、この場合の&rdquo;channelconfig&rdquo;は検知されたコンフィギュレーションを示す。アンビソニックス1-1の場合は、<strong>Detect [4(Ambisonics)(FuMa)]</strong>と表示される。<br/></li>
+<li><strong>Anonymous</strong>:AnonymousのChannel Configオプションは、表示順の通りにチャンネル数を割り振る。つまり、アンビソニックスの1-1ファイルは単に「1 + 2 + 3 + 4」となり、5.1ファイルは単に「1 + 2 + 3 + 4 + 5 + 6」となる。<br/></li>
+<li><strong>Film</strong>:リストにあるアンビソニックス以外の代替ファイル順番は、Film。5.1の場合は、<strong>5.1(L,C,R,SL,SR,LFE)</strong>と表示される。<br/></li>
+<li><strong>AmbiX</strong>:リストにあるアンビソニックスの代替ファイル順番は、AmbiX（ACNオーダーとSN3Dノーマライゼーション）。アンビソニックス1-1の場合は、<strong>4(Ambisonics)(AmbiX)</strong>と表示される。<br/></li>
+</ul>
+<p>Default value: 0<br/></p>

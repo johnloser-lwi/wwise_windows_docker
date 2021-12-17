@@ -1,0 +1,2715 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2006 Audiokinetic Inc. -->
+<PluginModule>
+  <SourcePlugin Name="SoundSeed Grain" CompanyID="0" PluginID="183">
+    <PluginInfo CanUnlink="true" MenuPath="SoundSeed">
+      <PlatformSupport>
+        <Platform Name="Any">
+          <CanReferenceSourceFile>true</CanReferenceSourceFile>
+        </Platform>
+      </PlatformSupport>
+    </PluginInfo>
+
+    <Properties>
+      <Property Name="OutputLevel" Type="Real32" SupportRTPCType="Additive" DataMeaning="Decibels" DisplayName="Output Level">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>2002</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-96</Min>
+              <Max>24</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterType" Type="int32" DisplayName="Filter Type" >
+        <DefaultValue>1</DefaultValue>
+        <AudioEnginePropertyID>2003</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="LPF6">0</Value>
+              <Value DisplayName="LPF12">1</Value>
+              <Value DisplayName="HPF6">2</Value>
+              <Value DisplayName="HPF12">3</Value>
+              <Value DisplayName="BP">4</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="OutputChannelConfig" Type="int32" DisplayName="Output Config">
+        <DefaultValue>16641</DefaultValue>
+        <AudioEnginePropertyID>2004</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <!-- Serialized channel config: MSB mask(20) type(4) nchannels(8) -->
+              <Value DisplayName="Mono">16641</Value>
+              <Value DisplayName="Stereo">12546</Value>
+              <Value DisplayName="3.0">28931</Value>
+              <Value DisplayName="4.0">6304004</Value>
+              <Value DisplayName="5.1">6353158</Value>
+              <Value DisplayName="7.1">6549768</Value>
+              <Value DisplayName="5.1.2">90239240</Value>
+              <Value DisplayName="7.1.2">90435850</Value>
+              <Value DisplayName="7.1.4">761524492</Value>
+              <Value DisplayName="Ambisonics 1st order">516</Value>
+              <!-- 0x00000204 -->
+              <Value DisplayName="Ambisonics 2nd order">521</Value>
+              <!-- 0x00000209 -->
+              <Value DisplayName="Ambisonics 3rd order">528</Value>
+              <!-- 0x00000210 -->
+              <Value DisplayName="Ambisonics 4th order">537</Value>
+              <!-- 0x00000219 -->
+              <Value DisplayName="Ambisonics 5th order">548</Value>
+              <!-- 0x00000224 -->
+              <Value DisplayName="Auro 9.1">761327882</Value>
+              <Value DisplayName="Auro 10.1">769716491</Value>
+              <Value DisplayName="Auro 11.1">803270924</Value>
+              <Value DisplayName="Auro 13.1">803467534</Value>
+              <Value DisplayName="LFE">33025</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SelectFreqTimeGrain" Type="int32" DisplayName="Select Freq/Time">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>2005</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Time between Emissions">0</Value>
+              <Value DisplayName="Emissions per Second">1</Value>
+              <Value DisplayName="MIDI Emissions per Second">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <Property Name="GrainRate" Type="Real32" SupportRTPCType="Exclusive" DataMeaning="Frequency" DisplayName="Emissions per Second">
+        <UserInterface Step="0.02" Fine="0.001" Decimals="3" SliderType="11" ShowFeedback="true"/>
+        <DefaultValue>1</DefaultValue>
+        <AudioEnginePropertyID>0</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.02</Min>
+              <Max>20000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="SelectFreqTimeGrain" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Freq -->
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="GrainTime" Type="Real32" SupportRTPCType="Exclusive" DisplayName="Time between Emissions">
+        <UserInterface Step="0.02" Fine="0.001" Decimals="3" SliderType="11" ShowFeedback="true"/>
+        <DefaultValue>1000</DefaultValue>
+        <AudioEnginePropertyID>140</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.05</Min>
+              <Max>50000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="SelectFreqTimeGrain" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Time -->
+                <Value>0</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="Offset" Type="Real32" SupportRTPCType="Additive" DisplayName="Offset">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" ShowFeedback="true"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>10</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-100</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      <Dependencies>
+          <PropertyDependency Name="QuantizeToMarkers" Action="Enable">
+            <Condition>
+              <Enumeration Type="bool">
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="Speed" Type="Real32" SupportRTPCType="Additive" DisplayName="Speed">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" ShowFeedback="true"/>
+        <DefaultValue>1</DefaultValue>
+        <AudioEnginePropertyID>20</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-4</Min>
+              <Max>4</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="Transpose" Type="Real32" SupportRTPCType="Additive" DataMeaning="PitchCents" DisplayName="Pitch" >
+        <UserInterface Step="1" Decimals="0" ShowFeedback="true"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>30</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="int32">
+              <Min>-4800</Min>
+              <Max>4800</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="Attack" Type="Real32" SupportRTPCType="Additive" DisplayName="Attack" >
+        <UserInterface Step="1" Fine="0.1" Decimals="1" UIMax="500" ShowFeedback="true"/>
+        <DefaultValue>10</DefaultValue>
+        <AudioEnginePropertyID>40</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>5000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="Release" Type="Real32" SupportRTPCType="Additive" DisplayName="Release" >
+        <UserInterface Step="1" Fine="0.1" Decimals="1" UIMax="500" ShowFeedback="true"/>
+        <DefaultValue>10</DefaultValue>
+        <AudioEnginePropertyID>50</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>5000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="WindowMode" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Independent Attack and Release -->
+                <Value>0</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="Amplitude" Type="Real32" SupportRTPCType="Additive" DisplayName="Amplitude" >
+        <UserInterface Step="1" Fine="0.1" Decimals="1" ShowFeedback="true"/>
+        <DefaultValue>100</DefaultValue>
+        <AudioEnginePropertyID>70</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="Duration" Type="Real32" SupportRTPCType="Additive" DisplayName="Duration" >
+        <UserInterface Step="1" Fine="0.1" Decimals="2" UIMax="1000" ShowFeedback="true"/>
+        <DefaultValue>1000</DefaultValue>
+        <AudioEnginePropertyID>80</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.02</Min>
+              <Max>10000.0</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="DurationLink" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="FilterFreq" Type="Real32" SupportRTPCType="Exclusive" DataMeaning="Frequency" DisplayName="Filter Cutoff">
+        <UserInterface Decimals="0" ShowFeedback="true"/>
+        <DefaultValue>20000</DefaultValue>
+        <AudioEnginePropertyID>90</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>20</Min>
+              <Max>20000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterQ" Type="Real32" SupportRTPCType="Additive" DisplayName="Filter Q">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" SliderType="8" ShowFeedback="true"/>
+        <DefaultValue>0.707</DefaultValue>
+        <AudioEnginePropertyID>100</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.1</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+		<Dependencies>
+          <PropertyDependency Name="FilterType" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <Value>1</Value>
+				<Value>3</Value>
+				<Value>4</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="Azimuth" Type="Real32" SupportRTPCType="Additive" DisplayName="Azimuth" >
+        <UserInterface Step="1" Fine="0.1" Decimals="1" ShowFeedback="true"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>110</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-180</Min>
+              <Max>180</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="PositioningSelect" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="Elevation" Type="Real32" SupportRTPCType="Additive" DisplayName="Elevation" >
+        <UserInterface Step="1" Fine="0.1" Decimals="1" ShowFeedback="true"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>120</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-90</Min>
+              <Max>90</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="PositioningSelect" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="Spread" Type="Real32" SupportRTPCType="Additive" DisplayName="Spread" >
+        <UserInterface Step="1" Fine="0.1" Decimals="1" ShowFeedback="true"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>130</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="PositioningSelect" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="MarkerSelect" Type="Real32" SupportRTPCType="Additive" DisplayName="Position">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" ShowFeedback="true"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>150</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMultiplier" Type="Real32" SupportRTPCType="Additive" DisplayName="Duration Multiplier" >
+        <UserInterface Step="0.1" Fine="0.001" Decimals="3" UIMin="0.1" UIMax="10" ShowFeedback="true"/>
+        <DefaultValue>1</DefaultValue>
+        <AudioEnginePropertyID>60</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.001</Min>
+              <Max>1000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="DurationLink" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <Value>0</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+
+      <!-- Mod Depths -->
+      <!-- Grain Rate -->
+        <Property Name="GrainRateMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Emissions per Second Mod 1 Amount" DisplayGroup="Mod 1" DocId="GrainRateModDepth">
+          <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>1</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>-10</Min>
+                <Max>10</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainRateMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Emissions per Second Mod 2 Amount" DisplayGroup="Mod 2" DocId="GrainRateModDepth">
+          <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>2</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>-10</Min>
+                <Max>10</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainRateMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Emissions per Second Mod 3 Amount" DisplayGroup="Mod 3" DocId="GrainRateModDepth">
+          <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>3</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>-10</Min>
+                <Max>10</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainRateMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Emissions per Second Mod 4 Amount" DisplayGroup="Mod 4" DocId="GrainRateModDepth">
+          <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>4</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>-10</Min>
+                <Max>10</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainRateMod1Quantization" Type="int32" DisplayName="Emissions per Second Mod 1 Quantization" DocId="GrainRateModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>5</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+                <Value DisplayName="Chromatic">3</Value>
+                <Value DisplayName="Major">4</Value>
+                <Value DisplayName="Minor">5</Value>
+                <Value DisplayName="Pentatonic">6</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainRateMod2Quantization" Type="int32" DisplayName="Emissions per Second Mod 2 Quantization" DocId="GrainRateModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>6</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+                <Value DisplayName="Chromatic">3</Value>
+                <Value DisplayName="Major">4</Value>
+                <Value DisplayName="Minor">5</Value>
+                <Value DisplayName="Pentatonic">6</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainRateMod3Quantization" Type="int32" DisplayName="Emissions per Second Mod 3 Quantization" DocId="GrainRateModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>7</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+                <Value DisplayName="Chromatic">3</Value>
+                <Value DisplayName="Major">4</Value>
+                <Value DisplayName="Minor">5</Value>
+                <Value DisplayName="Pentatonic">6</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainRateMod4Quantization" Type="int32" DisplayName="Emissions per Second Mod 4 Quantization" DocId="GrainRateModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>8</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+                <Value DisplayName="Chromatic">3</Value>
+                <Value DisplayName="Major">4</Value>
+                <Value DisplayName="Minor">5</Value>
+                <Value DisplayName="Pentatonic">6</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+      
+      
+      <!-- Grain Time -->
+        <Property Name="GrainTimeMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Time Between Emissions Mod 1 Amount" DisplayGroup="Mod 1" DocId="GrainTimeModDepth">
+          <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>141</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>-10</Min>
+                <Max>10</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainTimeMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Time Between Emissions Mod 2 Amount" DisplayGroup="Mod 2" DocId="GrainTimeModDepth">
+          <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>142</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>-10</Min>
+                <Max>10</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainTimeMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Time Between Emissions Mod 3 Amount" DisplayGroup="Mod 3" DocId="GrainTimeModDepth">
+          <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>143</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>-10</Min>
+                <Max>10</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainTimeMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Time Between Emissions Mod 4 Amount" DisplayGroup="Mod 4" DocId="GrainTimeModDepth">
+          <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>144</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>-10</Min>
+                <Max>10</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainTimeMod1Quantization" Type="int32" DisplayName="Time Between Emissions Mod 1 Quantization" DocId="GrainTimeModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>145</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+                <Value DisplayName="Chromatic">3</Value>
+                <Value DisplayName="Major">4</Value>
+                <Value DisplayName="Minor">5</Value>
+                <Value DisplayName="Pentatonic">6</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainTimeMod2Quantization" Type="int32" DisplayName="Time Between Emissions Mod 2 Quantization" DocId="GrainTimeModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>146</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+                <Value DisplayName="Chromatic">3</Value>
+                <Value DisplayName="Major">4</Value>
+                <Value DisplayName="Minor">5</Value>
+                <Value DisplayName="Pentatonic">6</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainTimeMod3Quantization" Type="int32" DisplayName="Time Between Emissions Mod 3 Quantization" DocId="GrainTimeModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>147</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+                <Value DisplayName="Chromatic">3</Value>
+                <Value DisplayName="Major">4</Value>
+                <Value DisplayName="Minor">5</Value>
+                <Value DisplayName="Pentatonic">6</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="GrainTimeMod4Quantization" Type="int32" DisplayName="Time Between Emissions Mod 4 Quantization" DocId="GrainTimeModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>148</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+                <Value DisplayName="Chromatic">3</Value>
+                <Value DisplayName="Major">4</Value>
+                <Value DisplayName="Minor">5</Value>
+                <Value DisplayName="Pentatonic">6</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+
+
+      <!-- Offset -->
+        <Property Name="OffsetMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Offset Mod 1 Amount" DisplayGroup="Mod 1" DocId="OffsetModDepth">
+          <UserInterface Step="1" Fine="0.1" Decimals="2"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>11</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>0</Min>
+                <Max>100</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="OffsetMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Offset Mod 2 Amount" DisplayGroup="Mod 2" DocId="OffsetModDepth">
+          <UserInterface Step="1" Fine="0.1" Decimals="2"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>12</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>0</Min>
+                <Max>100</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="OffsetMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Offset Mod 3 Amount" DisplayGroup="Mod 3" DocId="OffsetModDepth">
+          <UserInterface Step="1" Fine="0.1" Decimals="2"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>13</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>0</Min>
+                <Max>100</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="OffsetMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Offset Mod 4 Amount" DisplayGroup="Mod 4" DocId="OffsetModDepth">
+          <UserInterface Step="1" Fine="0.1" Decimals="2"/>
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>14</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Range Type="Real32">
+                <Min>0</Min>
+                <Max>100</Max>
+              </Range>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="OffsetMod1Quantization" Type="int32" DisplayName="Offset Mod 1 Quantization" DocId="OffsetModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>15</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="OffsetMod2Quantization" Type="int32" DisplayName="Offset Mod 2 Quantization" DocId="OffsetModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>16</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="OffsetMod3Quantization" Type="int32" DisplayName="Offset Mod 3 Quantization" DocId="OffsetModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>17</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+        <Property Name="OffsetMod4Quantization" Type="int32" DisplayName="Offset Mod 4 Quantization" DocId="OffsetModQuantization">
+          <DefaultValue>0</DefaultValue>
+          <AudioEnginePropertyID>18</AudioEnginePropertyID>
+          <Restrictions>
+            <ValueRestriction>
+              <Enumeration Type="int32">
+                <Value DisplayName="None">0</Value>
+                <Value DisplayName="(-1, 1)">1</Value>
+                <Value DisplayName="(-1, 0, 1)">2</Value>
+              </Enumeration>
+            </ValueRestriction>
+          </Restrictions>
+        </Property>
+      
+      <!-- Speed -->
+      <Property Name="SpeedMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Speed Mod 1 Amount" DisplayGroup="Mod 1" DocId="SpeedModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>21</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>4</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpeedMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Speed Mod 2 Amount" DisplayGroup="Mod 2" DocId="SpeedModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>22</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>4</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpeedMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Speed Mod 3 Amount" DisplayGroup="Mod 3" DocId="SpeedModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>23</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>4</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpeedMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Speed Mod 4 Amount" DisplayGroup="Mod 4" DocId="SpeedModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>24</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>4</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpeedMod1Quantization" Type="int32" DisplayName="Speed Mod 1 Quantization" DocId="SpeedModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>25</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpeedMod2Quantization" Type="int32" DisplayName="Speed Mod 2 Quantization" DocId="SpeedModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>26</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpeedMod3Quantization" Type="int32" DisplayName="Speed Mod 3 Quantization" DocId="SpeedModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>27</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpeedMod4Quantization" Type="int32" DisplayName="Speed Mod 4 Quantization" DocId="SpeedModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>28</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Transpose -->
+      <Property Name="TransposeMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Pitch Mod 1 Amount" DisplayGroup="Mod 1" DocId="TransposeModDepth">
+        <UserInterface Step="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>31</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>4800</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="TransposeMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Pitch Mod 2 Amount" DisplayGroup="Mod 2" DocId="TransposeModDepth">
+        <UserInterface Step="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>32</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>4800</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="TransposeMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Pitch Mod 3 Amount" DisplayGroup="Mod 3" DocId="TransposeModDepth">
+        <UserInterface Step="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>33</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>4800</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="TransposeMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Pitch Mod 4 Amount" DisplayGroup="Mod 4" DocId="TransposeModDepth">
+        <UserInterface Step="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>34</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>4800</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="TransposeMod1Quantization" Type="int32" DisplayName="Pitch Mod 1 Quantization" DocId="TransposeModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>35</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="TransposeMod2Quantization" Type="int32" DisplayName="Pitch Mod 2 Quantization" DocId="TransposeModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>36</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="TransposeMod3Quantization" Type="int32" DisplayName="Pitch Mod 3 Quantization" DocId="TransposeModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>37</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="TransposeMod4Quantization" Type="int32" DisplayName="Pitch Mod 4 Quantization" DocId="TransposeModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>38</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Attack -->
+      <Property Name="AttackMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Attack Mod 1 Amount" DisplayGroup="Mod 1" DocId="AttackModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>41</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AttackMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Attack Mod 2 Amount" DisplayGroup="Mod 2" DocId="AttackModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>42</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AttackMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Attack Mod 3 Amount" DisplayGroup="Mod 3" DocId="AttackModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>43</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AttackMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Attack Mod 4 Amount" DisplayGroup="Mod 4" DocId="AttackModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>44</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AttackMod1Quantization" Type="int32" DisplayName="Attack Mod 1 Quantization" DocId="AttackModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>45</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AttackMod2Quantization" Type="int32" DisplayName="Attack Mod 1 Quantization" DocId="AttackModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>46</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AttackMod3Quantization" Type="int32" DisplayName="Attack Mod 1 Quantization" DocId="AttackModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>47</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AttackMod4Quantization" Type="int32" DisplayName="Attack Mod 1 Quantization" DocId="AttackModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>48</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Release -->
+      <Property Name="ReleaseMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Release Mod 1 Amount" DisplayGroup="Mod 1" DocId="ReleaseModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>51</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ReleaseMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Release Mod 2 Amount" DisplayGroup="Mod 2" DocId="ReleaseModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>52</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ReleaseMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Release Mod 3 Amount" DisplayGroup="Mod 3" DocId="ReleaseModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>53</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ReleaseMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Release Mod 4 Amount" DisplayGroup="Mod 4" DocId="ReleaseModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="2" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>54</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ReleaseMod1Quantization" Type="int32" DisplayName="Release Mod 1 Quantization" DocId="ReleaseModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>55</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ReleaseMod2Quantization" Type="int32" DisplayName="Release Mod 2 Quantization" DocId="ReleaseModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>56</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ReleaseMod3Quantization" Type="int32" DisplayName="Release Mod 3 Quantization" DocId="ReleaseModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>57</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ReleaseMod4Quantization" Type="int32" DisplayName="Release Mod 4 Quantization" DocId="ReleaseModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>58</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Amplitude -->
+      <Property Name="AmplitudeMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Amplitude Mod 1 Amount" DisplayGroup="Mod 1" DocId="AmplitudeModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1" />
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>71</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AmplitudeMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Amplitude Mod 2 Amount" DisplayGroup="Mod 2" DocId="AmplitudeModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1" />
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>72</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AmplitudeMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Amplitude Mod 3 Amount" DisplayGroup="Mod 3" DocId="AmplitudeModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1" />
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>73</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AmplitudeMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Amplitude Mod 4 Amount" DisplayGroup="Mod 4" DocId="AmplitudeModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1" />
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>74</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AmplitudeMod1Quantization" Type="int32" DisplayName="Amplitude Mod 1 Quantization" DocId="AmplitudeModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>75</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AmplitudeMod2Quantization" Type="int32" DisplayName="Amplitude Mod 2 Quantization" DocId="AmplitudeModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>76</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AmplitudeMod3Quantization" Type="int32" DisplayName="Amplitude Mod 3 Quantization" DocId="AmplitudeModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>77</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AmplitudeMod4Quantization" Type="int32" DisplayName="Amplitude Mod 4 Quantization" DocId="AmplitudeModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>78</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Duration -->
+      <Property Name="DurationMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Duration Mod 1 Amount" DisplayGroup="Mod 1" DocId="DurationModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>81</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Duration Mod 2 Amount" DisplayGroup="Mod 2" DocId="DurationModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>82</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Duration Mod 3 Amount" DisplayGroup="Mod 3" DocId="DurationModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>83</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Duration Mod 4 Amount" DisplayGroup="Mod 4" DocId="DurationModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>84</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMod1Quantization" Type="int32" DisplayName="Duration Mod 1 Quantization" DocId="DurationModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>85</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMod2Quantization" Type="int32" DisplayName="Duration Mod 2 Quantization" DocId="DurationModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>86</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMod3Quantization" Type="int32" DisplayName="Duration Mod 3 Quantization" DocId="DurationModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>87</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMod4Quantization" Type="int32" DisplayName="Duration Mod 4 Quantization" DocId="DurationModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>88</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Filter Freq -->
+      <Property Name="FilterFreqMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Filter Cutoff Mod 1 Amount" DisplayGroup="Mod 1" DocId="FilterFreqModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>91</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterFreqMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Filter Cutoff Mod 2 Amount" DisplayGroup="Mod 2" DocId="FilterFreqModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>92</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterFreqMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Filter Cutoff Mod 3 Amount" DisplayGroup="Mod 3" DocId="FilterFreqModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>93</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterFreqMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Filter Cutoff Mod 4 Amount" DisplayGroup="Mod 4" DocId="FilterFreqModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>94</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterFreqMod1Quantization" Type="int32" DisplayName="Filter Cutoff Mod 1 Quantization" DocId="FilterFreqModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>95</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterFreqMod2Quantization" Type="int32" DisplayName="Filter Cutoff Mod 2 Quantization" DocId="FilterFreqModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>96</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterFreqMod3Quantization" Type="int32" DisplayName="Filter Cutoff Mod 3 Quantization" DocId="FilterFreqModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>97</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterFreqMod4Quantization" Type="int32" DisplayName="Filter Cutoff Mod 4 Quantization" DocId="FilterFreqModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>98</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+              <Value DisplayName="Chromatic">3</Value>
+              <Value DisplayName="Major">4</Value>
+              <Value DisplayName="Minor">5</Value>
+              <Value DisplayName="Pentatonic">6</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Filter Q -->
+      <Property Name="FilterQMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Filter Q Mod 1 Amount" DisplayGroup="Mod 1" DocId="FilterQModDepth">
+        <UserInterface Step="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>101</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterQMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Filter Q Mod 2 Amount" DisplayGroup="Mod 2" DocId="FilterQModDepth">
+        <UserInterface Step="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>102</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterQMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Filter Q Mod 3 Amount" DisplayGroup="Mod 3" DocId="FilterQModDepth">
+        <UserInterface Step="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>103</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterQMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Filter Q Mod 4 Amount" DisplayGroup="Mod 4" DocId="FilterQModDepth">
+        <UserInterface Step="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>104</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterQMod1Quantization" Type="int32" DisplayName="Filter Q Mod 1 Quantization" DocId="FilterQModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>105</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterQMod2Quantization" Type="int32" DisplayName="Filter Q Mod 2 Quantization" DocId="FilterQModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>106</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterQMod3Quantization" Type="int32" DisplayName="Filter Q Mod 3 Quantization" DocId="FilterQModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>107</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="FilterQMod4Quantization" Type="int32" DisplayName="Filter Q Mod 4 Quantization" DocId="FilterQModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>108</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Azimuth -->
+      <Property Name="AzimuthMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Azimuth Mod 1 Amount" DisplayGroup="Mod 1" DocId="AzimuthModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>111</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>180</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AzimuthMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Azimuth Mod 2 Amount" DisplayGroup="Mod 2" DocId="AzimuthModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>112</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>180</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AzimuthMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Azimuth Mod 3 Amount" DisplayGroup="Mod 3" DocId="AzimuthModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>113</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>180</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AzimuthMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Azimuth Mod 4 Amount" DisplayGroup="Mod 4" DocId="AzimuthModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>114</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>180</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AzimuthMod1Quantization" Type="int32" DisplayName="Azimuth Mod 1 Quantization" DocId="AzimuthModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>115</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AzimuthMod2Quantization" Type="int32" DisplayName="Azimuth Mod 2 Quantization" DocId="AzimuthModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>116</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AzimuthMod3Quantization" Type="int32" DisplayName="Azimuth Mod 3 Quantization" DocId="AzimuthModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>117</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="AzimuthMod4Quantization" Type="int32" DisplayName="Azimuth Mod 4 Quantization" DocId="AzimuthModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>118</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Elevation -->
+      <Property Name="ElevationMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Elevation Mod 1 Amount" DisplayGroup="Mod 1" DocId="ElevationModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>121</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>90.0</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ElevationMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Elevation Mod 2 Amount" DisplayGroup="Mod 2" DocId="ElevationModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>122</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>90.0</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ElevationMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Elevation Mod 3 Amount" DisplayGroup="Mod 3" DocId="ElevationModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>123</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>90.0</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ElevationMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Elevation Mod 4 Amount" DisplayGroup="Mod 4" DocId="ElevationModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>124</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>90.0</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ElevationMod1Quantization" Type="int32" DisplayName="Elevation Mod 1 Quantization" DocId="ElevationModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>125</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ElevationMod2Quantization" Type="int32" DisplayName="Elevation Mod 2 Quantization" DocId="ElevationModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>126</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ElevationMod3Quantization" Type="int32" DisplayName="Elevation Mod 3 Quantization" DocId="ElevationModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>127</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ElevationMod4Quantization" Type="int32" DisplayName="Elevation Mod 4 Quantization" DocId="ElevationModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>128</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Spread -->
+      <Property Name="SpreadMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Spread Mod 1 Amount" DisplayGroup="Mod 1" DocId="SpreadModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>131</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpreadMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Spread Mod 2 Amount" DisplayGroup="Mod 2" DocId="SpreadModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>132</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpreadMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Spread Mod 3 Amount" DisplayGroup="Mod 3" DocId="SpreadModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>133</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpreadMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Spread Mod 4 Amount" DisplayGroup="Mod 4" DocId="SpreadModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="1"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>134</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpreadMod1Quantization" Type="int32" DisplayName="Spread Mod 1 Quantization" DocId="SpreadModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>135</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpreadMod2Quantization" Type="int32" DisplayName="Spread Mod 2 Quantization" DocId="SpreadModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>136</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpreadMod3Quantization" Type="int32" DisplayName="Spread Mod 3 Quantization" DocId="SpreadModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>137</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="SpreadMod4Quantization" Type="int32" DisplayName="Spread Mod 4 Quantization" DocId="SpreadModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>138</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      
+      <!-- MarkerSelect -->
+      <Property Name="MarkerSelectMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Position Mod 1 Amount" DisplayGroup="Mod 1" DocId="MarkerSelectModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="2"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>151</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="MarkerSelectMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Position Mod 2 Amount" DisplayGroup="Mod 2" DocId="MarkerSelectModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="2"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>152</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="MarkerSelectMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Position Mod 3 Amount" DisplayGroup="Mod 3" DocId="MarkerSelectModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="2"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>153</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="MarkerSelectMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Position Mod 4 Amount" DisplayGroup="Mod 4" DocId="MarkerSelectModDepth">
+        <UserInterface Step="1" Fine="0.1" Decimals="2"/>
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>154</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="MarkerSelectMod1Quantization" Type="int32" DisplayName="Position Mod 1 Quantization" DocId="MarkerSelectModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>155</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="MarkerSelectMod2Quantization" Type="int32" DisplayName="Position Mod 2 Quantization" DocId="MarkerSelectModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>156</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="MarkerSelectMod3Quantization" Type="int32" DisplayName="Position Mod 3 Quantization" DocId="MarkerSelectModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>157</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="MarkerSelectMod4Quantization" Type="int32" DisplayName="Position Mod 4 Quantization" DocId="MarkerSelectModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>158</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      
+      <!-- Duration Multiplier -->
+      <Property Name="DurationMultiplierMod1Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Duration Multiplier Mod 1 Amount" DisplayGroup="Mod 1" DocId="DurationMultiplierModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4" />
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>61</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMultiplierMod2Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Duration Multiplier Mod 2 Amount" DisplayGroup="Mod 2" DocId="DurationMultiplierModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4" />
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>62</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMultiplierMod3Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Duration Multiplier Mod 3 Amount" DisplayGroup="Mod 3" DocId="DurationMultiplierModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4" />
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>63</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMultiplierMod4Depth" Type="Real32" SupportRTPCType="Additive" DisplayName="Duration Multiplier Mod 4 Amount" DisplayGroup="Mod 4" DocId="DurationMultiplierModDepth">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3" UIMin="-4" UIMax="4" />
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>64</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-10</Min>
+              <Max>10</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMultiplierMod1Quantization" Type="int32" DisplayName="Duration Multiplier Mod 1 Quantization" DocId="DurationMultiplierModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>65</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMultiplierMod2Quantization" Type="int32" DisplayName="Duration Multiplier Mod 2 Quantization" DocId="DurationMultiplierModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>66</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMultiplierMod3Quantization" Type="int32" DisplayName="Duration Multiplier Mod 3 Quantization" DocId="DurationMultiplierModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>67</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationMultiplierMod4Quantization" Type="int32" DisplayName="Duration Multiplier Mod 4 Quantization" DocId="DurationMultiplierModQuantization">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>68</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="None">0</Value>
+              <Value DisplayName="(-1, 1)">1</Value>
+              <Value DisplayName="(-1, 0, 1)">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- Modulator -->
+      <!-- #1 -->
+      <Property Name="ModWaveform1" Type="int32" SupportRTPCType="Exclusive" DisplayName="Modulator 1 Waveform" DisplayGroup="Mod 1">
+        <DefaultValue>5</DefaultValue>
+        <AudioEnginePropertyID>500</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Sine">0</Value>
+              <Value DisplayName="Triangle">1</Value>
+              <Value DisplayName="Square">2</Value>
+              <Value DisplayName="Saw up">3</Value>
+              <Value DisplayName="Saw down">4</Value>
+              <Value DisplayName="Random">5</Value>
+              <Value DisplayName="Sine+">6</Value>
+              <Value DisplayName="Triangle+">7</Value>
+              <Value DisplayName="Square+">8</Value>
+              <Value DisplayName="Saw up+">9</Value>
+              <Value DisplayName="Saw down+">10</Value>
+              <Value DisplayName="Random+">11</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ModSelect1" Type="int32" DisplayName="Modulator 1 Time/Freq">
+        <DefaultValue>1</DefaultValue>
+        <AudioEnginePropertyID>900</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Period">0</Value>
+              <Value DisplayName="Frequency">1</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ModRate1" Type="Real32" SupportRTPCType="Exclusive" DataMeaning="Frequency" DisplayName="Modulator 1 Frequency" DisplayGroup="Mod 1" DocId="ModRate">
+        <UserInterface Step="0.02" Fine="0.001" Decimals="3" SliderType="11" />
+        <DefaultValue>20000</DefaultValue>
+        <AudioEnginePropertyID>600</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.008</Min>
+              <Max>20000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="ModSelect1" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Freq -->
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="ModPeriod1" Type="Real32" SupportRTPCType="Exclusive" DisplayName="Modulator 1 Period" DisplayGroup="Mod 1" DocId="ModPeriod">
+        <UserInterface Step="0.02" Fine="0.001" Decimals="3" SliderType="11" UIMax="50000"/>
+        <DefaultValue>1000</DefaultValue>
+        <AudioEnginePropertyID>800</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.05</Min>
+              <Max>120000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="ModSelect1" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Time -->
+                <Value>0</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="ModAmount1" Type="Real32" SupportRTPCType="Additive" DisplayName="Modulator 1 Output" DisplayGroup="Mod 1">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3"/>
+        <DefaultValue>100</DefaultValue>
+        <AudioEnginePropertyID>700</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-100</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- #2 -->
+      <Property Name="ModWaveform2" Type="int32" SupportRTPCType="Exclusive" DisplayName="Modulator 2 Waveform" DisplayGroup="Mod 2">
+        <DefaultValue>5</DefaultValue>
+        <AudioEnginePropertyID>501</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Sine">0</Value>
+              <Value DisplayName="Triangle">1</Value>
+              <Value DisplayName="Square">2</Value>
+              <Value DisplayName="Saw up">3</Value>
+              <Value DisplayName="Saw down">4</Value>
+              <Value DisplayName="Random">5</Value>
+              <Value DisplayName="Sine+">6</Value>
+              <Value DisplayName="Triangle+">7</Value>
+              <Value DisplayName="Square+">8</Value>
+              <Value DisplayName="Saw up+">9</Value>
+              <Value DisplayName="Saw down+">10</Value>
+              <Value DisplayName="Random+">11</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ModSelect2" Type="int32" DisplayName="Modulator 2 Time/Freq">
+        <DefaultValue>1</DefaultValue>
+        <AudioEnginePropertyID>901</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Period">0</Value>
+              <Value DisplayName="Frequency">1</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ModRate2" Type="Real32" SupportRTPCType="Exclusive" DataMeaning="Frequency" DisplayName="Modulator 2 Frequency" DisplayGroup="Mod 2" DocId="ModRate">
+        <UserInterface Step="0.02" Fine="0.001" Decimals="3" SliderType="11" />
+        <DefaultValue>20000</DefaultValue>
+        <AudioEnginePropertyID>601</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.008</Min>
+              <Max>20000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="ModSelect2" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Freq -->
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="ModPeriod2" Type="Real32" SupportRTPCType="Exclusive" DisplayName="Modulator 2 Period" DisplayGroup="Mod 2" DocId="ModPeriod">
+        <UserInterface Step="0.02" Fine="0.001" Decimals="3" SliderType="11" UIMax="50000"/>
+        <DefaultValue>1000</DefaultValue>
+        <AudioEnginePropertyID>801</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.05</Min>
+              <Max>120000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="ModSelect2" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Time -->
+                <Value>0</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="ModAmount2" Type="Real32" SupportRTPCType="Additive" DisplayName="Modulator 2 Output" DisplayGroup="Mod 2">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3"/>
+        <DefaultValue>100</DefaultValue>
+        <AudioEnginePropertyID>701</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-100</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- #3 -->
+      <Property Name="ModWaveform3" Type="int32" SupportRTPCType="Exclusive" DisplayName="Modulator 3 Waveform" DisplayGroup="Mod 3">
+        <DefaultValue>9</DefaultValue>
+        <AudioEnginePropertyID>502</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Sine">0</Value>
+              <Value DisplayName="Triangle">1</Value>
+              <Value DisplayName="Square">2</Value>
+              <Value DisplayName="Saw up">3</Value>
+              <Value DisplayName="Saw down">4</Value>
+              <Value DisplayName="Random">5</Value>
+              <Value DisplayName="Sine+">6</Value>
+              <Value DisplayName="Triangle+">7</Value>
+              <Value DisplayName="Square+">8</Value>
+              <Value DisplayName="Saw up+">9</Value>
+              <Value DisplayName="Saw down+">10</Value>
+              <Value DisplayName="Random+">11</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ModSelect3" Type="int32" DisplayName="Modulator 3 Time/Freq">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>902</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Period">0</Value>
+              <Value DisplayName="Frequency">1</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ModRate3" Type="Real32" SupportRTPCType="Exclusive" DataMeaning="Frequency"  DisplayName="Modulator 3 Frequency" DisplayGroup="Mod 3" DocId="ModRate">
+        <UserInterface Step="0.02" Fine="0.001" Decimals="3" SliderType="11" />
+        <DefaultValue>20000</DefaultValue>
+        <AudioEnginePropertyID>602</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.008</Min>
+              <Max>20000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="ModSelect3" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Freq -->
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="ModPeriod3" Type="Real32" SupportRTPCType="Exclusive" DisplayName="Modulator 3 Period" DisplayGroup="Mod 3" DocId="ModPeriod">
+        <UserInterface Step="0.02" Fine="0.001" Decimals="3" SliderType="11" UIMax="50000"/>
+        <DefaultValue>1000</DefaultValue>
+        <AudioEnginePropertyID>802</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.05</Min>
+              <Max>120000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="ModSelect3" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Time -->
+                <Value>0</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="ModAmount3" Type="Real32" SupportRTPCType="Additive" DisplayName="Modulator 3 Output" DisplayGroup="Mod 3">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3"/>
+        <DefaultValue>100</DefaultValue>
+        <AudioEnginePropertyID>702</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-100</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <!-- #4 -->
+      <Property Name="ModWaveform4" Type="int32" SupportRTPCType="Exclusive" DisplayName="Modulator 4 Waveform" DisplayGroup="Mod 4">
+        <DefaultValue>9</DefaultValue>
+        <AudioEnginePropertyID>503</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Sine">0</Value>
+              <Value DisplayName="Triangle">1</Value>
+              <Value DisplayName="Square">2</Value>
+              <Value DisplayName="Saw up">3</Value>
+              <Value DisplayName="Saw down">4</Value>
+              <Value DisplayName="Random">5</Value>
+              <Value DisplayName="Sine+">6</Value>
+              <Value DisplayName="Triangle+">7</Value>
+              <Value DisplayName="Square+">8</Value>
+              <Value DisplayName="Saw up+">9</Value>
+              <Value DisplayName="Saw down+">10</Value>
+              <Value DisplayName="Random+">11</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ModSelect4" Type="int32" DisplayName="Modulator 4 Time/Freq">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>903</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Period">0</Value>
+              <Value DisplayName="Frequency">1</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="ModRate4" Type="Real32" SupportRTPCType="Exclusive" DataMeaning="Frequency"  DisplayName="Modulator 4 Frequency" DisplayGroup="Mod 4" DocId="ModRate">
+        <UserInterface Step="0.02" Fine="0.001" Decimals="3" SliderType="11" />
+        <DefaultValue>20000</DefaultValue>
+        <AudioEnginePropertyID>603</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.008</Min>
+              <Max>20000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="ModSelect4" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Freq -->
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="ModPeriod4" Type="Real32" SupportRTPCType="Exclusive" DisplayName="Modulator 4 Period" DisplayGroup="Mod 4" DocId="ModPeriod">
+        <UserInterface Step="0.02" Fine="0.001" Decimals="3" SliderType="11" UIMax="50000"/>
+        <DefaultValue>1000</DefaultValue>
+        <AudioEnginePropertyID>803</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0.05</Min>
+              <Max>120000</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="ModSelect4" Action="Enable">
+            <Condition>
+              <Enumeration Type="int32">
+                <!--Time -->
+                <Value>0</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="ModAmount4" Type="Real32" SupportRTPCType="Additive" DisplayName="Modulator 4 Output" DisplayGroup="Mod 4">
+        <UserInterface Step="0.1" Fine="0.01" Decimals="3"/>
+        <DefaultValue>100</DefaultValue>
+        <AudioEnginePropertyID>703</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>-100</Min>
+              <Max>100</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+
+      <Property Name="MidiMapTranspose" Type="bool" ForceRTPCCurveSegmentShape="Constant" DisplayName="Map MIDI to Grain Pitch" DisplayGroup="MIDI">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>1002</AudioEnginePropertyID>
+      </Property>
+      <Property Name="TransposeRoot" Type="int32" DisplayName="Root MIDI Note" DisplayGroup="MIDI">
+        <UserInterface Step="1" Fine="1" MusicNoteDisplay="true" UIMin="0" UIMax="127" Mid="0" />
+        <DefaultValue>60</DefaultValue>
+        <AudioEnginePropertyID>1004</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="Real32">
+              <Min>0</Min>
+              <Max>127</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+        <Dependencies>
+          <PropertyDependency Name="MidiMapTranspose" Action="Enable">
+            <Condition>
+              <Enumeration Type="bool">
+                <Value>1</Value>
+              </Enumeration>
+            </Condition>
+          </PropertyDependency>
+        </Dependencies>
+      </Property>
+      <Property Name="PositioningSelect" Type="int32" DisplayName="Channels" >
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>1005</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Direct Speaker Assignment">0</Value>
+              <Value DisplayName="3D Spatialization">1</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="QuantizeToMarkers" Type="bool" DisplayName="Snap to markers" >
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>1003</AudioEnginePropertyID>
+      </Property>
+      <Property Name="EnvelopeType" Type="int32" DisplayName="Grain Envelope Shape" >
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>1007</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Linear">0</Value>
+              <Value DisplayName="Constant Power">1</Value>
+              <Value DisplayName="Exponential">2</Value>
+              <Value DisplayName="Raised Cosine">3</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="WindowMode" Type="int32" DisplayName="Window Mode">
+        <DefaultValue>1</DefaultValue>
+        <AudioEnginePropertyID>1008</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Independent Attack and Release">0</Value>
+              <Value DisplayName="Release Same as Attack">1</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="DurationLink" Type="int32" DisplayName="Duration Link">
+        <DefaultValue>0</DefaultValue>
+        <AudioEnginePropertyID>1009</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Enumeration Type="int32">
+              <Value DisplayName="Duration Multiplier">0</Value>
+              <Value DisplayName="Duration">1</Value>
+              <Value DisplayName="MIDI Duration">2</Value>
+            </Enumeration>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+      <Property Name="MaxNumGrains" Type="int32" DisplayName="Max Number of Grains">
+        <UserInterface UIMax="256"/>
+        <DefaultValue>256</DefaultValue>
+        <AudioEnginePropertyID>1010</AudioEnginePropertyID>
+        <Restrictions>
+          <ValueRestriction>
+            <Range Type="int32">
+              <Min>1</Min>
+              <Max>2048</Max>
+            </Range>
+          </ValueRestriction>
+        </Restrictions>
+      </Property>
+    </Properties>
+    
+    <!-- Inner Types -->
+    <InnerTypes>
+      <InnerType Name="ParameterModulatorAssociation" CompanyID="0" PluginID="185">
+        <Properties>
+          <Property Name="ParamName" Type="string">
+            <UserInterface DisplayName="ParamName"/>
+            <DefaultValue></DefaultValue>
+          </Property>
+          <Property Name="ModName" Type="string">
+            <UserInterface DisplayName="ParamName"/>
+            <DefaultValue></DefaultValue>
+          </Property>
+          <Property Name="ParamDisplayName" Type="string">
+            <UserInterface DisplayName="ParamName"/>
+            <DefaultValue></DefaultValue>
+          </Property>
+          <Property Name="ModDisplayName" Type="string">
+            <UserInterface DisplayName="ParamName"/>
+            <DefaultValue></DefaultValue>
+          </Property>
+          <Property Name="ParamID" Type="int32">
+            <UserInterface DisplayName="ParamName"/>
+            <DefaultValue>0</DefaultValue>
+          </Property>
+          <Property Name="ModID" Type="int32">
+            <UserInterface DisplayName="ParamName"/>
+            <DefaultValue>0</DefaultValue>
+          </Property>
+        </Properties>
+      </InnerType>
+    </InnerTypes>
+  </SourcePlugin>
+</PluginModule>

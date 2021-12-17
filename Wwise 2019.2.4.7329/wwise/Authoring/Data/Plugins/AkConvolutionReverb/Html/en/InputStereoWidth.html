@@ -1,0 +1,12 @@
+
+<h2>Input Spread</h2>
+<p>Determines the amount of crosstalk between the left and right downmix channels prior to reverberation. This can broaden the sense of space of an otherwise strongly correlated impulse response by enlarging the spread of the input downmix.</p>
+<p>When a value of zero is used, the input signal is downmixed to mono, and then convolved with each impulse response channel. A value of 180 means that the result of the multi-channel convolution is fed directly to each side.</p>
+<p><strong>Note</strong>: On the other hand, with input spread of 180 (maximum), an incoming sound panned to the hard left will be solely convolved with the left channel of the impulse response, which does not make sense in terms of sound propagation.</p>
+<p><strong>Tip</strong>: With multi-channel impulse responses, it is recommended to use a mono or quasi-mono downmix (Input Spread close to 0) in Reverb mode. You should use higher values of Input Spread only with mono impulse responses, because it is the only way to &ldquo;cheat&rdquo; and create different signals (thus a sense of space) on the left and right.</p>
+<p><strong>Warning</strong>: This property has no effect on 1.0 (mono) or 1.1 channel sounds.</p>
+<p><strong>Warning</strong>: This property does not apply to Filter mode.</p>
+<p><strong>Warning</strong>: This property is ignored with ambisonic impulse response configurations.</p>
+<p><strong>Note</strong>: Input Spread may be used with ambisonic input signals and mono impulse responses.</p>
+<p>Default value: 0<br/>
+Range: 0 to 180<br/></p>

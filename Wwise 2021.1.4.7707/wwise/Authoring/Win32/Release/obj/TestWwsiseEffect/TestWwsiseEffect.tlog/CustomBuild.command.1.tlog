@@ -1,0 +1,4 @@
+^C:\USERS\XINDONG\DESKTOP\TESTWWSISEEFFECT\WWISEPLUGIN\TESTWWSISEEFFECT.XML
+if not exist "C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\Win32\Release\bin\Plugins\" mkdir "C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\Win32\Release\bin\Plugins\"
+if exist "C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\Win32\Release\bin\Plugins\TestWwsiseEffect.xml" del /F /Q "C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\Win32\Release\bin\Plugins\TestWwsiseEffect.xml"
+copy /y "C:\Users\XINDONG\Desktop\TestWwsiseEffect\WwisePlugin\TestWwsiseEffect.xml" "C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.4.7707\Authoring\Win32\Release\bin\Plugins\TestWwsiseEffect.xml"

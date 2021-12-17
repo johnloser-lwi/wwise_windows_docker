@@ -1,0 +1,7 @@
+
+<h2>Output Config</h2>
+<p>Wwise Reflectはout-of-place Effectなので、入力されたものと異なるチャンネルコンフィギュレーションを出力することができる。プラグインの出力チャンネルコンフィギュレーションは、Output Configで定義する。</p>
+<p>マルチチャンネルコンフィギュレーションで、サウンドエンジンが無駄にスペーシャリゼーションの計算をすることがないように、MonoバスにWwise Reflectを使うことが推奨される。バスコンフィギュレーションがMono以外の場合は、Wwise Reflectがまず最初に、入力信号をMonoにダウンミックスする。ただし、出力されるアーリーリフレクションはスペーシャリゼーションされるべきである。Output Config設定を使えば、スペーシャリゼーションを行うコンフィギュレーションを自由に決定できる。</p>
+<p>この値を <strong>Parent Bus</strong> に設定すると、Wwise Reflectはクエリを行い、インサート先のバスの親のバスコンフィギュレーションを使う。</p>
+<p>なお、親バスのコンフィギュレーションがAudio Objectsであれば、Wwise Reflectはアーリーリフレクション1つに対してAudio Objectを1つ、出力することになる。これは、相当数のAudio Objectsになる場合がある。</p>
+<p>Default value: Parent Bus<br/></p>

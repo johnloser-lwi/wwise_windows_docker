@@ -1,0 +1,14 @@
+
+<h2>Emissions per Second Quantization</h2>
+<p>Emissions per Second에 적용되는 변조의 퀀티제이션을 말합니다.</p>
+<p>이 속성에 사용할 수 있는 퀀티제이션의 종류는 다음과 같습니다.</p>
+<ul>
+<li>None: 퀀티제이션을 하지 않음.</li>
+<li>(-1, 1): 변조기(modulator) 파형의 위와 아래로 퀀티제이션함.</li>
+<li>(-1, 0, 1): 변조기(modulator) 파형의 위, 중간, 아래로 퀀티제이션함. &lsquo;중간&rsquo;은 양극성 파형에만 적용되며 기반 Emissions per Second 값에 해당합니다.</li>
+<li>Chromatic: 반음(옥타브의 1/12)만 허용됩니다. 변조량이 0.5 옥타브일 경우 허용되는 값은 기반 Emissions per Second 주파수로부터 {-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6} 개 반음만큼 떨어진 값입니다.</li>
+<li>Major: 장음계의 음정만 허용됩니다. 변조량이 0.5 옥타브일 경우 허용되는 값은 기반 Emissions per Second 주파수로부터 {-5, -3, -1, 0, 2, 4, 5} 개 반음만큼 떨어진 값입니다.</li>
+<li>Minor: 단음계의 음정만 허용됩니다. 변조량이 0.5 옥타브일 경우 허용되는 값은 기반 Emissions per Second 주파수로부터 {-5, -4, -2, 0, 2, 3, 5} 개 반음만큼 떨어진 값입니다.</li>
+<li>Pentatonic: 5음 음계(pentatonic)의 음정만 허용됩니다. 변조량이 0.5 옥타브일 경우 허용되는 값은 기반 Emissions per Second 주파수로부터 {-5, -2, 0, 3, 5} 개 반음만큼 떨어진 값입니다.</li>
+</ul>
+<p>Default value: None<br/></p>

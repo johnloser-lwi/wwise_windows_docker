@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Manifest Name="Tencent GME Presets" Type="Presets">
+  <Dependencies>
+    <Plugin PluginName="Tencent GME" PluginType="7" CompanyID="289" PluginID="9000"/>
+    <Plugin PluginName="Tencent GME Source" PluginType="2" CompanyID="289" PluginID="9001"/>
+    <Plugin PluginName="Tencent GME Receive" PluginType="2" CompanyID="289" PluginID="9003"/>
+    <Plugin PluginName="Tencent GME Send" PluginType="3" CompanyID="289" PluginID="9004"/>
+  </Dependencies>
+</Manifest>

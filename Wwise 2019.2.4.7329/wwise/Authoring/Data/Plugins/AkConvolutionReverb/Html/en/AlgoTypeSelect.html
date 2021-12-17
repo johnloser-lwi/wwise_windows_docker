@@ -1,0 +1,8 @@
+
+<h2>Reverb Type</h2>
+<p>Determines the type of algorithm used.</p>
+<p><strong>Reverb (default)</strong> In this mode, multi-channel content is first downmixed using the controls in the Input Levels section. A multi-channel convolution is performed, and the result is upmixed back to the original multi-channel configuration using the Output Levels control. Additional processing such as spread, pre-delay application, and rear channel delay are also performed, using the optimal amount of memory and CPU.</p>
+<p><strong>Tip</strong>: For all reverberation purposes, this mode of operation should be used.</p>
+<p><strong>Filter</strong>: This mode can be used to apply a direct convolution between each channel and the impulse response channel(s). In this mode, unlike the reverb mode, there is no downmix or upmix performed, and thus the Input/Output Levels are not enabled. With standard multi-channel impulse responses, the left input channels (front, side and/or rear) are convolved with the left impulse response channels while the right input channels are convolved with the right impulse response channels.</p>
+<p><strong>Tip</strong>: This mode can be used to apply a complex frequency response (for example, that of an electronic device, or a calibrated impulse response file to perform brickwall filtering) on all input channels.</p>
+<p>Default value: Reverb<br/></p>

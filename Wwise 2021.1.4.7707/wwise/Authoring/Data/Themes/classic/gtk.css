@@ -1,0 +1,166 @@
+* {
+  all: unset;
+  color: white;
+  font-family: Tahoma;
+  font-size: 8pt; }
+
+headerbar {
+  background-color: #787878; }
+
+*:focus {
+  border-color: white; }
+
+entry {
+  background-color: #a3a3a3;
+  border: 1px solid #727272;
+  border-radius: 2px;
+  color: white;
+  padding: 2px; }
+
+entry selection {
+  background-color: #53c0e7;
+  color: white; }
+
+entry:disabled {
+  background-color: #949494;
+  border-color: #838383;
+  color: #737373; }
+
+window {
+  background-color: #8c8c8c; }
+
+button {
+  background-color: #a5a5a5;
+  color: white;
+  border: 1px solid #707070;
+  border-radius: 2px;
+  padding: 5px; }
+
+button:hover {
+  background-color: #afafaf;
+  color: white; }
+
+button:active {
+  background-color: #4c4c4c;
+  color: white; }
+
+button:disabled {
+  background-color: #989898;
+  color: #b7b7b7;
+  border-color: #707070; }
+
+frame > border {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #646464; }
+
+checkbutton > check {
+  -gtk-icon-source: none;
+  background-image: url("images/Checkbox/Checkbox_nor.png");
+  background-repeat: no-repeat;
+  min-width: 13px;
+  min-height: 13px;
+  margin-right: 3px; }
+
+checkbutton:focus label {
+  border: 1px solid white; }
+
+checkbutton:hover > check:not(:checked) {
+  background-image: url("images/Checkbox/Checkbox_nor_hot.png"); }
+
+checkbutton:hover > check:checked {
+  background-image: url("images/Checkbox/Checkbox_sel_hot.png"); }
+
+checkbutton > check:checked {
+  background-image: url("images/Checkbox/Checkbox_sel.png"); }
+
+radiobutton > radio {
+  background-image: url("images/Radio/Radio_nor.png");
+  background-repeat: no-repeat;
+  min-width: 13px;
+  min-height: 13px;
+  margin-right: 3px; }
+
+radiobutton:hover > radio:not(:checked) {
+  background-image: url("images/Radio/Radio_nor_hot.png"); }
+
+radiobutton:hover > radio:checked {
+  background-image: url("images/Radio/Radio_sel_hot.png"); }
+
+radiobutton > radio:checked {
+  background-image: url("images/Radio/Radio_sel.png"); }
+
+combobox arrow {
+  background-image: url("images/Splitter/Splitter_ArrowDown.png");
+  background-size: 7px 5px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  min-height: 16px;
+  min-width: 16px; }
+
+combobox button,
+combobox button:hover,
+combobox button:active {
+  background-color: #a3a3a3;
+  border: 1px solid #727272;
+  border-radius: 2px;
+  padding: 2px;
+  color: white; }
+
+combobox button:focus {
+  border-color: white; }
+
+combobox button:disabled {
+  background-color: #949494;
+  border-color: #838383;
+  color: #b7b7b7; }
+
+combobox window.popup {
+  background-color: #a3a3a3;
+  border: 1px solid #727272;
+  border-radius: 2px; }
+
+combobox window.popup > * {
+  padding: 3px; }
+
+combobox window.popup *:hover {
+  background-color: #53c0e7;
+  color: white; }
+
+notebook header.top {
+  box-shadow: inset 0px -1px 1px 0px #646464; }
+
+notebook tabs {
+  margin-top: 5px;
+  margin-left: 10px; }
+
+notebook tab {
+  background-color: #828282;
+  border: 1px solid #646464;
+  padding: 5px;
+  color: gainsboro; }
+
+notebook tab:not(:last-child) {
+  margin-right: 3px; }
+
+notebook tab:checked {
+  background-color: #8c8c8c;
+  border-color: #cecece;
+  border-bottom-color: #8c8c8c;
+  color: white; }
+
+notebook tab:not(:checked):hover {
+  background-color: #8c8c8c;
+  border-color: #bebebe;
+  color: #e2e2e2; }
+
+.superrange scale {
+  min-height: 4px;
+  background-color: #a3a3a3;
+  border: 1px solid #727272; }
+  .superrange scale highlight {
+    background-color: #53c0e7; }
+  .superrange scale slider {
+    background-color: black;
+    min-height: 4px;
+    min-width: 4px; }

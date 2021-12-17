@@ -1,0 +1,8 @@
+
+<h2>Channels</h2>
+<p>Defines whether grains should be spatialized onto the output channel configuration of the synthesizer, as defined by Output Config, or just assigned directly.</p>
+<ul>
+<li>Direct Speaker Assignment: No spatialization or panning is applied. Mono files are routed to the center channel if the Output Config has a center channel, otherwise to the front left and front right channels. In general, the input channels are mapped to the same output channels and dropped when these channels are not present in the output configuration.</li>
+<li>3D Spatialization: Grains are 3D spatialized onto the synthesizer&rsquo;s output configuration using Azimuth, Elevation, and Spread. Note that Output Config has to have multiple channels for spatialization to be useful.</li>
+</ul>
+<p>Default value: Direct Speaker Assignment<br/></p>

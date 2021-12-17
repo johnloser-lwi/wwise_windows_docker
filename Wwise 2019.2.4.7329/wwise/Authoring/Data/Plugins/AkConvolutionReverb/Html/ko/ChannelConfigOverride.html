@@ -1,0 +1,14 @@
+
+<h2>Channel Config</h2>
+<p>채널의 변형 방식에 영향을 끼칠 소스의 가능한 채널 구성의 목록을 나타냅니다.</p>
+<p>Wwise는 다음의 파일 순서에 따라 소스 채널 구성을 해석합니다.</p>
+<ul>
+<li><strong>SMPTE</strong>: 앰비소닉 헤더가 없다면 Wwise는 기본적으로 파일 순서를 SMPTE(Microsoft 표준)로 해석합니다. 5.1의 경우 <strong>5.1(L,R,C,LFE,SL,SR)</strong>로 나타날 것입니다.<br/>
+하지만 &lsquo;channelconfig&rsquo;가 구성을 감지했을 때에는 목록에는 Detect [channelconfig]라는 기본값이 나타납니다. 따라서 5.1의 경우 <strong>Detect [5.1(L,R,C,LFE,SL,SR)]</strong>로 표시됩니다.<br/></li>
+<li><strong>FuMa</strong>: 기본적으로 Ambisonic Component Ordering의 경우, Wwise는 파일 순서를 FuMa로 해석합니다. 1-1 앰비소닉의 경우 <strong>4(Ambisonics) (FuMa)</strong>로 나타납니다.<br/>
+하지만 &lsquo;channelconfig&rsquo;가 구성을 감지했을 때에는 목록에는 Detect [channelconfig]라는 기본값이 나타납니다. 따라서 1-1 앰비소닉의 경우 <strong>Detect [4(Ambisonics)(FuMa)]</strong>로 표시됩니다.<br/></li>
+<li><strong>Anonymous</strong>: 익명 Channel Config 옵션은 단순히 채널이 나타나는 순서대로 번호를 정합니다. 즉 앰비소닉 1-1 파일은 1 + 2 + 3 + 4가 되며, 5.1 파일은 1 + 2 + 3 + 4 + 5 + 6이 됩니다.<br/></li>
+<li><strong>Film</strong>: 앰비소닉 파일을 제외하면 Film과 같은 다른 파일 순서도 있습니다. 5.1일 경우 <strong>5.1(L,C,R,SL,SR,LFE)</strong>로 나타납니다.<br/></li>
+<li><strong>AmbiX</strong>: 앰비소닉의 경우 다른 파일 순서로는 AmbiX (SN3D 노멀라이제이션을 사용하는 ACN 차수법)가 있습니다. 앰비소닉 1-1의 경우, <strong>4(Ambisonics)(AmbiX)</strong>로 나타납니다.<br/></li>
+</ul>
+<p>Default value: 0<br/></p>

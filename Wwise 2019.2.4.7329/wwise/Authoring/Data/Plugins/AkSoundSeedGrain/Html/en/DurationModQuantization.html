@@ -1,0 +1,15 @@
+
+<h2>Duration Quantization</h2>
+<p>Quantization of modulation applied to Duration.</p>
+<p>The available quantization schemes for this property are:</p>
+<ul>
+<li>None: No quantization.</li>
+<li>(-1, 1): Quantized to the top and bottom of the modulator waveform.</li>
+<li>(-1, 0, 1): Quantized to the top, middle, and bottom of the modulator waveform. &ldquo;Middle&rdquo; only applies to bipolar waveforms and corresponds to the base Duration value.</li>
+<li>Chromatic: Only semitones (12th of an octave) are allowed. Say the modulation amount is 0.5 (octave), the allowed values are {-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6} semitones around the base Duration (see note below).</li>
+<li>Major: Only intervals of the major scale are allowed. Say the modulation amount is 0.5 (octave), the allowed values are {-5, -3, -1, 0, 2, 4, 5} semitones around the base Duration (see note below).</li>
+<li>Minor: Only intervals of the minor scale are allowed. Say the modulation amount is 0.5 (octave), the allowed values are {-5, -4, -2, 0, 2, 3, 5} semitones around the base Duration (see note below).</li>
+<li>Pentatonic: Only intervals of the pentatonic scale are allowed. Say the modulation amount is 0.5 (octave), the allowed values are {-5, -2, 0, 3, 5} semitones around the base Duration (see note below).</li>
+</ul>
+<p><strong>Note</strong>: Modulating one octave down is equivalent to stretching time by a factor of 2. Similarly, modulating one semitone down is equivalent to stretching time by 2 to the power of 1/12, that is, by a factor of 1.059.</p>
+<p>Default value: None<br/></p>

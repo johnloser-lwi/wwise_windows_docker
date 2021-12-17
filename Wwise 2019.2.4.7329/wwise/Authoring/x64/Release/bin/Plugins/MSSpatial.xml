@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2006 Audiokinetic Inc. -->
+<PluginModule>
+  <SinkPlugin Name="Microsoft Spatial Sound Platform Output" CompanyID="275" PluginID="170">
+    <PluginInfo CanUnlink="true">
+      <PlatformSupport>
+        <Platform Name="Windows"></Platform>
+        <Platform Name="XboxOne"></Platform>
+		<Platform Name="Chinook"></Platform>
+      </PlatformSupport>
+    </PluginInfo>
+	<Properties>
+  </Properties>
+  </SinkPlugin>
+</PluginModule>

@@ -1,0 +1,6 @@
+
+<h2>IR Smooth</h2>
+<p>Uses Low-Pass Filtering to smooth the frequency specific truncation points detected based on the threshold parameter. Smoothing can be used to compensate for the artifacts introduced by using high threshold values. The consequence of using high smoothing values is that any optimization gains will be reduced, so it should only be used when necessary. Note that it is sometimes best to set the threshold parameter at a lower value rather than having to use large smoothing parameter values. For more details, refer to <a href="HelpDoc=wwise_convolution_reverb_plug_in#memory_and_cpu_optimizations">Memory and CPU Optimizations</a>.</p>
+<p><strong>Note</strong>: This option is only enabled when the threshold parameter is set above -144 dB.</p>
+<p>Default value: 0<br/>
+Range: 0 to 100<br/></p>

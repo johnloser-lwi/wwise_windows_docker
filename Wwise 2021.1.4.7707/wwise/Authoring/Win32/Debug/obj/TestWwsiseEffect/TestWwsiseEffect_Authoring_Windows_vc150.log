@@ -1,0 +1,7 @@
+﻿  Copying "TestWwsiseEffect.xml"...
+  已复制         1 个文件。
+  TestWwsiseEffectPlugin.cpp
+  TestWwsiseEffectPluginGUI.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+mfcs140ud.lib(nolib.obj) : fatal error LNK1112: 模块计算机类型“x64”与目标计算机类型“x86”冲突
