@@ -1,0 +1,7 @@
+
+<h2>Output Config</h2>
+<p>Wwise Reflect is an out-of-place Effect, meaning that it has the ability to output a signal in a different channel configuration than its input. Output Config defines the channel configuration at the output of the plug-in.</p>
+<p>It is recommended to use Wwise Reflect on a mono bus, in order to avoid having the sound engine needlessly compute spatialization on a multi-channel configuration. If the bus configuration is different than mono, the first thing Wwise Reflect does with the input signal is to downmix it to mono. However, the outputted early reflections should be spatialized. With the Output Config control, you can decide on which configuration they will be spatialized.</p>
+<p>If the value is <strong>Parent Bus</strong>, Wwise Reflect queries and uses the bus configuration of the parent of the bus on which it is inserted.</p>
+<p>Note that if the parent bus&rsquo;s configuration is Audio Objects, then Wwise Reflect will output one Audio Object per early reflection. This can represent a substantial number of Audio Objects.</p>
+<p>Default value: Parent Bus<br/></p>

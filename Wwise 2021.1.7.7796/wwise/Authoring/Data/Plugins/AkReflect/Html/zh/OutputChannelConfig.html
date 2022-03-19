@@ -1,0 +1,7 @@
+
+<h2>Output Config</h2>
+<p>输出配置。Wwise Reflect 为非原地效果器，其可采用与输入不同的声道配置来输出信号。Output Config 用于定义插件输出端的声道配置。</p>
+<p>建议将 Wwise Reflect 用在单声道总线上，以避免声音引擎在多声道配置下执行不必要的空间化计算。若总线配置与单声道不同，则 Wwise Reflect 会先将输入信号下混为单声道。不过，输出的早期反射应当实施空间化处理。利用 Output Config 控件，可决定在哪种配置下实施空间化处理。</p>
+<p>若值为 <strong>Parent Bus</strong>，则 Wwise Reflect 将查询并使用对应父总线的总线配置。</p>
+<p>注意，若父总线的配置为 Audio Objects，则 Wwise Reflect 将针对每个早期反射声输出一个 Audio Object。也就是说，最终可能会产生大量 Audio Object。</p>
+<p>Default value: Parent Bus<br/></p>
