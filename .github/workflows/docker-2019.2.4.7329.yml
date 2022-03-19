@@ -1,0 +1,29 @@
+name: Build Docker
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ master ]
+    paths:
+      'Wwise 2019.2.4.7329/**'
+
+jobs:
+
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Login Docker
+      run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }} 
+    
+    - name: Build Wwise 2019.2.4.7329
+      run: | 
+        cp ./VC_redist.x64.exe "./Wwise 2019.2.4.7329" 
+        cp Dockerfile "./Wwise 2019.2.4.7329" 
+        docker build "./Wwise 2019.2.4.7329" --tag johnloser/wwise_windows:2019.2.4.7329
+    - name: Push
+      run: docker push --all-tags johnloser/wwise_windows
