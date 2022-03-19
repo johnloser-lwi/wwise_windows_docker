@@ -1,4 +1,4 @@
-name: Build Docker
+name: Build 2019.2.4.7329
 
 on:
   workflow_dispatch:

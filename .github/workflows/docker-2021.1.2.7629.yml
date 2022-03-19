@@ -1,4 +1,4 @@
-name: Build Docker
+name: Build 2021.1.2.7629
 
 on:
   workflow_dispatch:
